@@ -28,6 +28,7 @@ module.exports = function(minimist, options) {
 
     if (options.help && !argv._.length && keys.length === 1) {
       emitter.emit('help');
+      return argv;
     }
 
     keys.forEach(function (key) {
@@ -41,6 +42,8 @@ module.exports = function(minimist, options) {
         });
       }
     });
+
+    emitter.emit('end');
     return argv;
   };
   return emitter;

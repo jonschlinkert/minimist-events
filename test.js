@@ -28,6 +28,15 @@ describe('minimist', function () {
     assert.equal(cli.argv.foo, 'bar');
   });
 
+  it('should emit `end` after all args are emitted:', function () {
+    var i = 0;
+    cli.on('end', function () {
+      i++;
+    });
+    cli.parse(['a', 'b', 'c', '--foo=bar']);
+    assert.equal(i, 1);
+  });
+
   it('should emit each item in the _ array:', function () {
     var actual = [];
     cli.on('a', function (i) {
