@@ -1,0 +1,56 @@
+{
+  "name": "minimist-events",
+  "description": "Add events to minimist, ~30 sloc.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/minimist-events",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/minimist-events",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/minimist-events/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "component-emitter": "^1.2.0",
+    "minimist": "^1.1.2"
+  },
+  "devDependencies": {
+    "expand-object": "^0.2.3",
+    "mocha": "*"
+  },
+  "keywords": [
+    "args",
+    "argument",
+    "argv",
+    "cli",
+    "command",
+    "command-line",
+    "commands",
+    "emit",
+    "emitter",
+    "event",
+    "line",
+    "listen",
+    "listener",
+    "minimist",
+    "options",
+    "parse",
+    "parser"
+  ],
+  "verb": {
+    "related": {
+      "list": [
+        "minimist"
+      ]
+    }
+  }
+}
