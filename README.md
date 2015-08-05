@@ -258,6 +258,11 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
+**Brian Woodward**
+
+* [github/doowb](https://github.com/doowb)
+* [twitter/doowb](http://twitter.com/doowb)
+
 ## License
 
 Copyright © 2015 Jon Schlinkert

@@ -1,13 +1,17 @@
 {
   "name": "minimist-events",
   "description": "Add events to minimist, ~30 sloc.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/jonschlinkert/minimist-events",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/minimist-events",
   "bugs": {
     "url": "https://github.com/jonschlinkert/minimist-events/issues"
   },
+  "authors": [
+    "Brian Woodward (https://github.com/doowb)",
+    "Jon Schlinkert (https://github.com/jonschlinkert)"
+  ],
   "license": "MIT",
   "files": [
     "index.js"
