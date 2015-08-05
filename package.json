@@ -49,6 +49,7 @@
   "verb": {
     "related": {
       "list": [
+        "minimist-plugins",
         "minimist"
       ]
     }
