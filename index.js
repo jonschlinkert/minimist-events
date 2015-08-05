@@ -33,6 +33,7 @@ module.exports = function(minimist, options) {
     keys.forEach(function (key) {
       var val = argv[key];
       emitter.emit(key, val);
+      emitter.emit('*', key, val);
       if (key === '_') {
         val.forEach(function (k, i) {
           emitter.emit(i, k, val);
