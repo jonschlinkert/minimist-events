@@ -19,7 +19,7 @@ cli.on('quux', function (val) {
 });
 
 
-cli.parse(['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e']);
+cli(['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e']);
 console.log(cli.argv)
 
 

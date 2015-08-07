@@ -8,43 +8,58 @@
 'use strict';
 
 var Emitter = require('component-emitter');
+var forward = require('forward-object');
+var extend = require('extend-shallow');
 
-module.exports = function(minimist, options) {
-  if (typeof minimist !== 'function') {
-    throw new TypeError('expected minimist to be a function.');
+module.exports = function (options) {
+  if (typeof options === 'function') {
+    return events.apply(events, arguments);
   }
 
-  options = options || {};
-  var emitter = Emitter(minimist);
+  function events(minimist, opts) {
+    opts = extend({}, options, opts);
+    var fn = minimist;
 
-  emitter.parse = function () {
-    var argv = emitter.apply(emitter, arguments);
-    if (typeof options.postProcess === 'function') {
-      argv = options.postProcess(argv);
+    if (typeof fn !== 'function') {
+      throw new TypeError('expected minimist to be a function.');
     }
 
-    var keys = Object.keys(argv);
-    emitter.argv = argv;
+    opts = opts || {};
 
-    if (options.help && !argv._.length && keys.length === 1) {
-      emitter.emit('help');
-      return argv;
-    }
-
-    keys.forEach(function (key) {
-      var val = argv[key];
-      emitter.emit(key, val);
-      emitter.emit('*', key, val);
-      if (key === '_') {
-        val.forEach(function (k, i) {
-          emitter.emit(i, k, val);
-          emitter.emit(k, i, val);
-        });
+    var proxy = Emitter(function () {
+      var argv = fn.apply(fn, arguments);
+      if (typeof opts.postProcess === 'function') {
+        argv = opts.postProcess(argv);
       }
+
+      var keys = Object.keys(argv);
+      proxy.argv = argv;
+
+      if (opts.help && !argv._.length && keys.length === 1) {
+        proxy.emit('help');
+        return argv;
+      }
+
+      keys.forEach(function (key) {
+        var val = argv[key];
+        proxy.emit(key, val);
+        proxy.emit('*', key, val);
+
+        if (key === '_') {
+          val.forEach(function (k, i) {
+            proxy.emit(i, k, val);
+            proxy.emit(k, i, val);
+          });
+        }
+      });
+
+      proxy.emit('end');
+      return argv;
     });
 
-    emitter.emit('end');
-    return argv;
+    forward(proxy, fn);
+    return proxy;
   };
-  return emitter;
+
+  return minimistEvents;
 };

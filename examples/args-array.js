@@ -3,11 +3,10 @@ var cli = require('..')(minimist);
 
 
 cli.on('_', function (arr) {
-  console.log('args array:', arr);
+  console.log('_:', arr);
 });
 
-cli.parse(process.argv.slice(2));
+var args = process.argv.slice(2);
+cli(args.length ? args : ['help']);
 
-var args = cli.args;
-
-console.log(cli)
+console.log(cli.argv);
