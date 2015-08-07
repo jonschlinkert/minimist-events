@@ -3,11 +3,10 @@
 var assert = require('assert');
 var minimist = require('minimist');
 var cmd = require('./');
-var cli;
+var cli = cmd(minimist);
 
 describe('minimist', function () {
   beforeEach(function () {
-    cli = cmd(minimist);
     cli._callbacks = {};
   });
 
@@ -15,16 +14,16 @@ describe('minimist', function () {
     cli.on('_', function (arr) {
       assert.deepEqual(arr, ['a', 'b', 'c']);
     });
-    cli.parse(['a', 'b', 'c']);
+    cli(['a', 'b', 'c']);
   });
 
   it('should expose args on the `argv` object:', function () {
-    cli.parse(['a', 'b', 'c']);
+    cli(['a', 'b', 'c']);
     assert.deepEqual(cli.argv._, ['a', 'b', 'c']);
   });
 
   it('should expose options on the `argv` object:', function () {
-    cli.parse(['a', 'b', 'c', '--foo=bar']);
+    cli(['a', 'b', 'c', '--foo=bar']);
     assert.equal(cli.argv.foo, 'bar');
   });
 
@@ -33,7 +32,7 @@ describe('minimist', function () {
     cli.on('end', function () {
       i++;
     });
-    cli.parse(['a', 'b', 'c', '--foo=bar']);
+    cli(['a', 'b', 'c', '--foo=bar']);
     assert.equal(i, 1);
   });
 
@@ -51,7 +50,7 @@ describe('minimist', function () {
       actual.push(i);
       assert.equal(i, 2);
     });
-    cli.parse(['a', 'b', 'c']);
+    cli(['a', 'b', 'c']);
     assert.deepEqual(actual, [0, 1, 2]);
   });
 
@@ -69,7 +68,7 @@ describe('minimist', function () {
       actual.push(val);
       assert.equal(val, 'c');
     });
-    cli.parse(['a', 'b', 'c']);
+    cli(['a', 'b', 'c']);
     assert.deepEqual(actual, ['a', 'b', 'c']);
   });
 
@@ -87,7 +86,7 @@ describe('minimist', function () {
       actual.push(i);
       assert.deepEqual(arr, ['a', 'b', 'c']);
     });
-    cli.parse(['a', 'b', 'c']);
+    cli(['a', 'b', 'c']);
     assert.deepEqual(actual, [0, 1, 2]);
   });
 
@@ -96,7 +95,7 @@ describe('minimist', function () {
       assert.equal(val, 'bar');
       done();
     });
-    cli.parse(['--foo=bar']);
+    cli(['--foo=bar']);
   });
 
   it('should emit the value and array index for duplicate keys:', function () {
@@ -109,7 +108,7 @@ describe('minimist', function () {
       }
       i++;
     });
-    cli.parse(['--foo=bar', 'foo']);
+    cli(['--foo=bar', 'foo']);
   });
 
   it('should use minimist aliases:', function (done) {
@@ -117,7 +116,7 @@ describe('minimist', function () {
       assert.equal(val, 'bar');
       done();
     });
-    cli.parse(['--foo=bar'], {
+    cli(['--foo=bar'], {
       alias: {
         f: 'foo'
       }
@@ -131,7 +130,7 @@ describe('minimist', function () {
       i++;
       done();
     });
-    cli.parse([]);
+    cli([]);
     assert.equal(i, 1);
   });
 });
