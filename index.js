@@ -40,17 +40,21 @@ module.exports = function (options) {
         return argv;
       }
 
+      // ensure that `_` args are emitted first
+      proxy.emit('_', argv._);
+      proxy.emit('*', '_', argv._);
+
+      argv._.forEach(function (k, i) {
+        proxy.emit(i, k, argv._);
+        proxy.emit(k, i, argv._);
+      });
+
+      // after `_`, emit options args
       keys.forEach(function (key) {
+        if (key === '_') return;
         var val = argv[key];
         proxy.emit(key, val);
         proxy.emit('*', key, val);
-
-        if (key === '_') {
-          val.forEach(function (k, i) {
-            proxy.emit(i, k, val);
-            proxy.emit(k, i, val);
-          });
-        }
       });
 
       proxy.emit('end');
@@ -59,7 +63,7 @@ module.exports = function (options) {
 
     forward(proxy, fn);
     return proxy;
-  };
+  }
 
-  return minimistEvents;
+  return events;
 };
