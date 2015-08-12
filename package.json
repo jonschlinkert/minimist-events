@@ -1,7 +1,7 @@
 {
   "name": "minimist-events",
   "description": "Add events to minimist, ~30 sloc.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/jonschlinkert/minimist-events",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/minimist-events",
