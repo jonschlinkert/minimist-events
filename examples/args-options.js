@@ -18,8 +18,6 @@ cli.on('quux', function (val) {
   console.log('quux:', val);
 });
 
-
-cli(['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e']);
-console.log(cli.argv)
-
-
+var args = process.argv.slice(2);
+cli(args.length ? args : ['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e']);
+console.log(cli.argv);
