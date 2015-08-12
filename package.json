@@ -29,7 +29,9 @@
     "forward-object": "^0.1.0"
   },
   "devDependencies": {
+    "collection-visit": "^0.1.1",
     "minimist": "^1.1.3",
+    "minimist-expand": "^0.2.0",
     "mocha": "*"
   },
   "keywords": [
