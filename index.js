@@ -7,63 +7,44 @@
 
 'use strict';
 
-var Emitter = require('component-emitter');
-var forward = require('forward-object');
-var extend = require('extend-shallow');
+function plugin(opts) {
+  opts = opts || {};
 
-module.exports = function (options) {
-  if (typeof options === 'function') {
-    return events.apply(events, arguments);
-  }
-
-  function events(minimist, opts) {
-    opts = extend({}, options, opts);
-    var fn = minimist;
-
-    if (typeof fn !== 'function') {
-      throw new TypeError('expected minimist to be a function.');
-    }
-
-    opts = opts || {};
-
-    var proxy = Emitter(function () {
-      var argv = fn.apply(fn, arguments);
-      if (typeof opts.postProcess === 'function') {
-        argv = opts.postProcess(argv);
-      }
-
+  return function eventsPlugin(cli) {
+    return function (argv, next) {
       var keys = Object.keys(argv);
-      proxy.argv = argv;
+      cli.argv = argv;
 
       if (opts.help && !argv._.length && keys.length === 1) {
-        proxy.emit('help');
-        return argv;
+        cli.emit('help');
+        return next(null, argv);
       }
 
       // ensure that `_` args are emitted first
-      proxy.emit('_', argv._);
-      proxy.emit('*', '_', argv._);
+      cli.emit('_', argv._);
+      cli.emit('*', '_', argv._);
 
       argv._.forEach(function (k, i) {
-        proxy.emit(i, k, argv._);
-        proxy.emit(k, i, argv._);
+        cli.emit(i, k, argv._);
+        cli.emit(k, i, argv._);
       });
 
       // after `_`, emit options args
       keys.forEach(function (key) {
         if (key === '_') return;
         var val = argv[key];
-        proxy.emit(key, val);
-        proxy.emit('*', key, val);
+        cli.emit(key, val);
+        cli.emit('*', key, val);
       });
 
-      proxy.emit('end');
-      return argv;
-    });
+      next(null, argv);
+    };
+  };
+}
 
-    forward(proxy, fn);
-    return proxy;
-  }
 
-  return events;
-};
+/**
+ * Expose `plugin`
+ */
+
+module.exports = plugin;
