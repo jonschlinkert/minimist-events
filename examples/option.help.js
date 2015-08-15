@@ -1,8 +1,10 @@
-var minimist = require('minimist');
-var cli = require('..')(minimist, {help: true});
+var plugins = require('minimist-plugins');
+var cli = plugins(require('minimist'))
+  .use(require('..')({help: true}));
 
 cli.on('help', function () {
   console.log('Help!');
 });
 
-cli(process.argv.slice(2));
+cli.parse([], function() {});
+console.log(cli);

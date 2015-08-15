@@ -1,6 +1,7 @@
-var minimist = require('minimist');
-var cli = require('..')(minimist);
-
+var plugins = require('minimist-plugins');
+var cli = plugins(require('minimist'))
+  .use(require('minimist-expand'))
+  .use(require('..')());
 
 cli.on('foo', function (val) {
   console.log('foo:', val);
@@ -19,5 +20,10 @@ cli.on('quux', function (val) {
 });
 
 var args = process.argv.slice(2);
-cli(args.length ? args : ['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e']);
-console.log(cli.argv);
+if (!args.length) {
+  args = ['--foo=a', '--bar=b', '--baz=c', '--quux', 'fez', '--d:e'];
+}
+
+cli.parse(args, {alias: {task: 't'}}, function (err, argv) {
+  console.log(argv);
+});

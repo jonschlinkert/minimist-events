@@ -1,8 +1,10 @@
-var app = require('./app');
 var visit = require('collection-visit');
-var minimist = require('minimist');
-var expand = require('minimist-expand')(minimist);
-var cli = require('..')(expand);
+var plugins = require('minimist-plugins');
+var app = require('./app');
+
+var cli = plugins(require('minimist'))
+  .use(require('minimist-expand'))
+  .use(require('..')());
 
 
 cli.on('_', function (val) {
@@ -29,9 +31,11 @@ cli.on('del', function (val) {
 // });
 
 var args = process.argv.slice(2);
+if (!args.length) {
+  args = ['--set=a:b', '--set=c:d', '--get=a', '--del=a', '--set=e:f+g:h+i:j'];
+}
 
-cli(args.length ? args : ['--set=a:b', '--set=c:d', '--get=a', '--del=a', '--set=e:f+g:h+i:j'], {
-  alias: {task: 't'}
+cli.parse(args, {alias: {task: 't'}}, function (err, argv) {
+  console.log(argv);
 });
 
-console.log(app.cache)
